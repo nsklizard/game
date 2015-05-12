@@ -13,8 +13,7 @@
         http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
-    <context:component-scan base-package="hello"/>
-    <context:component-scan base-package="ru.nsk.lizard.game.db"/>
+    <context:component-scan base-package="ru.nsk.lizard.game"/>
     <mvc:annotation-driven/>
 
 
@@ -23,22 +22,6 @@
         <property name="url" value="jdbc:mysql://localhost:3306/game"/>
         <property name="username" value="root"/>
         <property name="password" value="123123"/>
-    </bean>
-
-
-    <bean id="sessionFactory"
-          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="hello"/>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-                <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/game</prop>
-                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
-                <prop key="hibernate.connection.username">root</prop>
-                <prop key="hibernate.connection.password">123132</prop>
-            </props>
-        </property>
     </bean>
 
 
@@ -55,7 +38,7 @@
           -->
         <property name="packagesToScan">
             <list>
-                <value>hello</value>
+                <value>ru.nsk.lizard.game</value>
             </list>
         </property>
         <property name="dataSource" ref="dataSource"/>
