@@ -1,0 +1,23 @@
+package ru.nsk.lizard.game.db.dao;
+
+import org.springframework.stereotype.Component;
+import ru.nsk.lizard.game.db.entities.Creature;
+import ru.nsk.lizard.game.db.entities.Gamemap;
+
+import javax.persistence.TypedQuery;
+import java.util.List;
+
+/**
+ * Created by dkim on 12.05.2015.
+ */
+@Component
+public class GameMapDAO extends GenericDaoImpl<Gamemap> {
+    public GameMapDAO() {
+        super(Gamemap.class);
+    }
+
+    public Creature getCreatureAt(int x, int y) {
+        Gamemap gm = (Gamemap) em.createQuery("from Gamemap where x=" + x + " and y=" + y).getSingleResult();
+        return (gm != null) ? gm.getCreature() : null;
+    }
+}

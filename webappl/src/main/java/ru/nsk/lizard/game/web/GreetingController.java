@@ -1,5 +1,6 @@
 package ru.nsk.lizard.game.web;
 
+import ru.nsk.lizard.game.db.dao.GameMapDAO;
 import ru.nsk.lizard.game.db.dao.UserDAO;
 import ru.nsk.lizard.game.db.entities.Creature;
 import ru.nsk.lizard.game.db.entities.Creatureconfig;
@@ -20,6 +21,9 @@ public class GreetingController {
     TestDAO testDAO;
 
     @Autowired
+    GameMapDAO gameMapDAO;
+
+    @Autowired
     UserDAO userDAO;
 
     @RequestMapping("/greeting")
@@ -35,5 +39,18 @@ public class GreetingController {
 //        }
 
         return name;
+    }
+
+    public String settleCreature(@RequestParam(value="x") int x,
+                                 @RequestParam(value="y") int y,
+                                 @RequestParam(value="creatureId") long creatureId){
+        if (x<0 || y<0 || creatureId<=0){
+            return "failed to settle creature";
+        }
+
+
+
+
+        return "creature with id="+creatureId+" settled in x="+x+", y="+y;
     }
 }
