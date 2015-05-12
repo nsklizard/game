@@ -24,15 +24,15 @@ public class GreetingController {
 
     @RequestMapping("/greeting")
     @Transactional
-    public String greeting(@RequestParam(value="name", defaultValue="World") String name) {
+    public String greeting(@RequestParam(value="name"/*, defaultValue="World"*/) String name) {
         Test t = new Test();
         t.setValue(name);
         testDAO.update(t);
 
-        Set<Creature> creatureSet = userDAO.find(1L).getCreatures();
-        for (Creature creature : creatureSet){
-            List<Creatureconfig> creatureConfigs = creature.getCreatureConfigs();
-        }
+//        Set<Creature> creatureSet = userDAO.find(1L).getCreatures();
+//        for (Creature creature : creatureSet){
+//            List<Creatureconfig> creatureConfigs = creature.getCreatureConfigs();
+//        }
 
         return name;
     }
