@@ -1,3 +1,4 @@
 /webappl/.idea
 /webappl/target
 /webappl/webappl.iml
+/webappl/src/main/resources/rebel.xml
