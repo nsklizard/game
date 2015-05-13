@@ -5,6 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.nsk.lizard.game.common.GameConstants;
 import ru.nsk.lizard.game.db.dao.GameMapDAO;
 import ru.nsk.lizard.game.db.entities.Creature;
+import ru.nsk.lizard.game.db.entities.Creatureconfig;
+import ru.nsk.lizard.game.logic.exceptions.CorruptedCreatureException;
+
+import java.util.List;
 
 /**
  * Created by dkim on 12.05.2015.
@@ -43,5 +47,16 @@ public class FightJob {
         //TODO: fight
 
         return;
+    }
+
+    private boolean isAttackerWins(Creature attacker, Creature defender) throws CorruptedCreatureException {
+        List<Creatureconfig> attackerCreatureConfigs = attacker.getCreatureConfigs();
+        List<Creatureconfig> defenderCreatureConfigs = defender.getCreatureConfigs();
+
+        if (attackerCreatureConfigs==null){
+            throw new CorruptedCreatureException("");
+        }
+
+        return false;
     }
 }
