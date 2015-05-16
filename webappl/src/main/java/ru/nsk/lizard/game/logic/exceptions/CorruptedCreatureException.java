@@ -14,7 +14,16 @@ public class CorruptedCreatureException extends Exception{
     }
 
     public CorruptedCreatureException(Creature creature) {
+        super("");
         this.creature = creature;
+    }
 
+    public CorruptedCreatureException(String error, Creature creature) {
+        super(error);
+        this.creature = creature;
+    }
+
+    public Creature getCreature() {
+        return creature;
     }
 }

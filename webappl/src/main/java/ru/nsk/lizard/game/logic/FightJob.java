@@ -54,8 +54,22 @@ public class FightJob {
         List<Creatureconfig> defenderCreatureConfigs = defender.getCreatureConfigs();
 
         if (attackerCreatureConfigs==null){
-            throw new CorruptedCreatureException("");
+            throw new CorruptedCreatureException("attackerCreatureConfigs is null", attacker);
         }
+        if (defenderCreatureConfigs==null){
+            throw new CorruptedCreatureException("defenderCreatureConfigs is null", defender);
+        }
+        if (attackerCreatureConfigs.size()!=GameConstants.CREATURE_CONFIG_SIZE){
+            throw new CorruptedCreatureException("Wrong creature config size", attacker);
+        }
+        if (defenderCreatureConfigs.size()!=GameConstants.CREATURE_CONFIG_SIZE){
+            throw new CorruptedCreatureException("Wrong creature config size", defender);
+        }
+
+        for (int i = 0; i< GameConstants.CREATURE_CONFIG_SIZE; i++){
+            attackerCreatureConfigs.get(i);
+        }
+
 
         return false;
     }
