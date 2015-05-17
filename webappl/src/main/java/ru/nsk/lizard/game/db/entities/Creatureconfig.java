@@ -10,8 +10,8 @@ public class Creatureconfig {
     private long creatureConfigId;
     private Long power;
     private Integer stepNumber;
-    private Creature creatureId;
-    private Skill skillId;
+    private Creature creature;
+    private Skill skill;
 
     @Id
     @Column(name = "creatureConfigId")
@@ -66,22 +66,22 @@ public class Creatureconfig {
     }
 
     @ManyToOne
-    @JoinColumn(name = "creatureId", referencedColumnName = "creatureId")
-    public Creature getCreatureId() {
-        return creatureId;
+    @JoinColumn(name = "creature", referencedColumnName = "creatureId")
+    public Creature getCreature() {
+        return creature;
     }
 
-    public void setCreatureId(Creature creatureId) {
-        this.creatureId = creatureId;
+    public void setCreature(Creature creature) {
+        this.creature = creature;
     }
 
     @OneToOne
-    @JoinColumn(name = "skillId", referencedColumnName = "skillId")
-    public Skill getSkillId() {
-        return skillId;
+    @JoinColumn(name = "skill", referencedColumnName = "skillId")
+    public Skill getSkill() {
+        return skill;
     }
 
-    public void setSkillId(Skill skillId) {
-        this.skillId = skillId;
+    public void setSkill(Skill skill) {
+        this.skill = skill;
     }
 }

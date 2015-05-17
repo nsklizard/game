@@ -6,4 +6,13 @@ package ru.nsk.lizard.game.common;
 public class GameConstants {
     public static final int WORLD_SIZE = 5;
     public static final int CREATURE_CONFIG_SIZE = 5;
+
+
+    public static final int STONE = 1;
+    public static final int SCISSORS = 2;
+    public static final int PAPER = 3;
+
+    public static final int POWER_ADVANTAGE = 3;
+
+
 }

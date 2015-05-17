@@ -77,7 +77,7 @@ public class Creature {
         this.user = user;
     }
 
-    @OneToMany(mappedBy = "creatureId")
+    @OneToMany(mappedBy = "creature")
     @OrderBy("stepNumber")
     public List<Creatureconfig> getCreatureConfigs() {
         return creatureConfigs;

@@ -11,8 +11,16 @@ public class ActionProcessor extends Thread{
     private static Logger log = Logger.getLogger(ActionProcessor.class);
     public ConcurrentLinkedQueue<FightJob> queue = new ConcurrentLinkedQueue<FightJob>();
 
+    private static final ActionProcessor instance = new ActionProcessor();
+    private ActionProcessor(){
+    }
+    public static ActionProcessor getInstance() {
+        return instance;
+    }
+
     @Override
     public void run() {
+        log.info("Here we go -----------------------------> ");
         while(true) {
             FightJob job = null;
             while ((job = queue.poll()) != null) {

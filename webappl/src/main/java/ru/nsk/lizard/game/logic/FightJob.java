@@ -6,6 +6,7 @@ import ru.nsk.lizard.game.common.GameConstants;
 import ru.nsk.lizard.game.db.dao.GameMapDAO;
 import ru.nsk.lizard.game.db.entities.Creature;
 import ru.nsk.lizard.game.db.entities.Creatureconfig;
+import ru.nsk.lizard.game.db.entities.Skill;
 import ru.nsk.lizard.game.logic.exceptions.CorruptedCreatureException;
 
 import java.util.List;
@@ -44,7 +45,25 @@ public class FightJob {
             return;
         }
 
-        //TODO: fight
+        try {
+            if (isAttackerWins(attacker, defender)){
+                log.debug("attacker won");
+                gameMapDAO.setCreatureAt(x,y,attacker);
+                actionProcessor.queue.add(new FightJob(x,y-1,attacker, actionProcessor));
+                actionProcessor.queue.add(new FightJob(x,y+1,attacker, actionProcessor));
+                actionProcessor.queue.add(new FightJob(x-1,y,attacker, actionProcessor));
+                actionProcessor.queue.add(new FightJob(x+1,y,attacker, actionProcessor));
+            }
+            else{
+                gameMapDAO.setCreatureAt(x,y,defender);
+                actionProcessor.queue.add(new FightJob(x,y-1,defender, actionProcessor));
+                actionProcessor.queue.add(new FightJob(x,y+1,defender, actionProcessor));
+                actionProcessor.queue.add(new FightJob(x-1,y,defender, actionProcessor));
+                actionProcessor.queue.add(new FightJob(x+1,y,defender, actionProcessor));
+            }
+        } catch (CorruptedCreatureException e) {
+            log.error(e);
+        }
 
         return;
     }
@@ -66,11 +85,95 @@ public class FightJob {
             throw new CorruptedCreatureException("Wrong creature config size", defender);
         }
 
+        log.debug("FIGHT: "+attacker.getName()+" vs "+defender.getName());
+        int attackerWins= 0;
+        int defenderWins = 0;
+
+
         for (int i = 0; i< GameConstants.CREATURE_CONFIG_SIZE; i++){
-            attackerCreatureConfigs.get(i);
+            Creatureconfig attackerCC = attackerCreatureConfigs.get(i);
+            Creatureconfig defenderCC = defenderCreatureConfigs.get(i);
+            if (attackerCC == null){
+                throw new CorruptedCreatureException("Creature config is null", attacker);
+            }
+            if (defenderCC == null){
+                throw new CorruptedCreatureException("Creature config is null", defender);
+            }
+
+            if (isFirstWin(attackerCC, defenderCC)){
+                attackerWins++;
+            }else{
+                defenderWins++;
+            }
         }
 
 
+        return attackerWins>defenderWins;
+    }
+
+    private boolean isFirstWin(Creatureconfig first, Creatureconfig second) throws CorruptedCreatureException {
+        if (first==null || first.getSkill() == null){
+            throw new CorruptedCreatureException("CreatureConfig or Skill is null", first.getCreature());
+        }
+        if (second==null || second.getSkill() == null){
+            throw new CorruptedCreatureException("CreatureConfig or Skill is null", second.getCreature());
+        }
+        if (first.getSkill().getSkillId()!=GameConstants.STONE
+                &&first.getSkill().getSkillId()!=GameConstants.SCISSORS
+                &&first.getSkill().getSkillId()!=GameConstants.PAPER){
+            throw new CorruptedCreatureException("Wrong skillId = "+first.getSkill().getSkillId(), first.getCreature());
+        }
+        if (second.getSkill().getSkillId()!=GameConstants.STONE
+                &&second.getSkill().getSkillId()!=GameConstants.SCISSORS
+                &&second.getSkill().getSkillId()!=GameConstants.PAPER){
+            throw new CorruptedCreatureException("Wrong skillId = "+second.getSkill().getSkillId(), second.getCreature());
+        }
+
+        switch((int) first.getSkill().getSkillId()){
+            case GameConstants.STONE:
+                switch ((int)second.getSkill().getSkillId()){
+                    case GameConstants.STONE:
+                        return compareEquals(first, second);
+                    case GameConstants.SCISSORS:
+                        return compareFirstWin(first, second);
+                    case GameConstants.PAPER:
+                        return compareFirstWin(second, first);
+                }
+                
+            case GameConstants.SCISSORS:
+                switch ((int)second.getSkill().getSkillId()){
+                    case GameConstants.STONE:
+                        return compareFirstWin(second, first);
+                    case GameConstants.SCISSORS:
+                        return compareEquals(first, second);
+                    case GameConstants.PAPER:
+                        return compareFirstWin(first, second);
+                }
+                
+            case GameConstants.PAPER:
+                switch ((int)second.getSkill().getSkillId()){
+                    case GameConstants.STONE:
+                        return compareFirstWin(first, second);
+                    case GameConstants.SCISSORS:
+                        return compareFirstWin(second, first);
+                    case GameConstants.PAPER:
+                        return compareEquals(first, second);
+                }
+        }
         return false;
+    }
+
+    /**
+     * First wins by default logic. This function examines if this to change
+     * @param first
+     * @param second
+     * @return
+     */
+    private boolean compareFirstWin(Creatureconfig first, Creatureconfig second) {
+        return first.getPower().longValue() + GameConstants.POWER_ADVANTAGE <= second.getPower().longValue();
+    }
+
+    private boolean compareEquals(Creatureconfig first, Creatureconfig second) {
+        return first.getPower().longValue()>=second.getPower().longValue();
     }
 }
