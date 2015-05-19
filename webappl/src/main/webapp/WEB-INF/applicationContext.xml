@@ -20,6 +20,12 @@
     <context:component-scan base-package="ru.nsk.lizard.game"/>
     <mvc:annotation-driven/>
 
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
     <bean id="actionProcessorLauncher" class="ru.nsk.lizard.game.logic.ActionProcessorLauncher"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">

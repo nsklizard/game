@@ -12,5 +12,9 @@
 </head>
 <body>
   showMap
+<%
+%>
+
+${message}
 </body>
 </html>
