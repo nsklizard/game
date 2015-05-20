@@ -1,6 +1,7 @@
 package ru.nsk.lizard.game.logic;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -8,9 +9,12 @@ import org.springframework.beans.factory.InitializingBean;
  */
 public class ActionProcessorLauncher implements InitializingBean {
 
+    @Autowired
+    ActionProcessor actionProcessor;
+
     @Override
     public void afterPropertiesSet() throws Exception {
-        ActionProcessor.getInstance().start();
+        actionProcessor.start();
 
     }
 }

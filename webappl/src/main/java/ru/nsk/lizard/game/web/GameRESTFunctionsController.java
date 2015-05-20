@@ -22,6 +22,9 @@ public class GameRESTFunctionsController {
     @Autowired
     GameMapDAO gameMapDAO;
 
+    @Autowired
+    ActionProcessor actionProcessor;
+
     @RequestMapping("/settleCreature")
     public String settleCreature(@RequestParam(value = "x") int x,
                                  @RequestParam(value = "y") int y,
@@ -29,7 +32,7 @@ public class GameRESTFunctionsController {
         if (x < 0 || y < 0 || creatureId <= 0 || x > GameConstants.WORLD_SIZE || y > GameConstants.WORLD_SIZE) {
             return "failed to settle creature";
         }
-        ActionProcessor.getInstance().queue.add(new FightJob(x, y, creatureDAO.find(creatureId), ActionProcessor.getInstance(),gameMapDAO));
+        actionProcessor.queue.add(new FightJob(x, y, creatureDAO.find(creatureId), gameMapDAO));
         return "creature with id=" + creatureId + " settled in x=" + x + ", y=" + y;
     }
 }

@@ -71,13 +71,13 @@
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
                 <property name="showSql" value="true"/>
                 <property name="generateDdl" value="false"/>
-                <property name="databasePlatform" value="${database.dialect}"/>
+                <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect"/>
             </bean>
         </property>
         <property name="jpaProperties">
             <!-- set extra properties here, e.g. for Hibernate: -->
             <props>
-                <prop key="hibernate.dialect">${database.dialect}</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
                 <prop key="hibernate.ejb.autodetection">${database.autodetection}</prop>
                 <prop key="hibernate.show_sql">true</prop>
                 <!-- TODO полезно для дебага ${database.show_sql}-->
