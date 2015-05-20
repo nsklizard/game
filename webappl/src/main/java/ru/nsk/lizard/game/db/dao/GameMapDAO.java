@@ -1,6 +1,7 @@
 package ru.nsk.lizard.game.db.dao;
 
 import org.springframework.stereotype.Component;
+import ru.nsk.lizard.game.common.GameConstants;
 import ru.nsk.lizard.game.db.entities.Creature;
 import ru.nsk.lizard.game.db.entities.Gamemap;
 
@@ -26,5 +27,13 @@ public class GameMapDAO extends GenericDaoImpl<Gamemap> {
 
     private Gamemap getGamemap(int x, int y) {
         return (Gamemap) em.createQuery("from Gamemap where x=" + x + " and y=" + y).getSingleResult();
+    }
+
+    public Creature[][] getMap(){
+        Creature[][] ret = new Creature[GameConstants.WORLD_SIZE][GameConstants.WORLD_SIZE];
+        for (Gamemap g : findAll()){
+            ret[g.getX()][g.getY()] = g.getCreature();
+        }
+        return ret;
     }
 }

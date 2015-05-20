@@ -1,3 +1,5 @@
+<%@ page import="ru.nsk.lizard.game.common.GameConstants" %>
+<%@ page import="ru.nsk.lizard.game.db.entities.Creature" %>
 <%--
   Created by IntelliJ IDEA.
   User: dmitr_000
@@ -11,10 +13,19 @@
     <title>Game map</title>
 </head>
 <body>
-  showMap
 <%
+    Creature[][] map = (Creature[][]) request.getAttribute(GameConstants.MAP_ATTR);
+    StringBuffer sb = new StringBuffer();
+    for (int y = 0; y < GameConstants.WORLD_SIZE; y++) {
+        sb.append("<tr>");
+        for (int x = 0; x < GameConstants.WORLD_SIZE; x++) {
+            sb.append("<td>").append(map[x][y].getCreatureId()).append("</td>");
+        }
+        sb.append("</tr>");
+    }
 %>
-
-${message}
+<table>
+    <%=sb.toString()%>
+</table>
 </body>
 </html>

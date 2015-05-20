@@ -14,5 +14,6 @@ public class GameConstants {
 
     public static final int POWER_ADVANTAGE = 3;
 
+    public static final String MAP_ATTR = "MAP_ATTR";
 
 }
