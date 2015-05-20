@@ -5,6 +5,8 @@ import ru.nsk.lizard.game.common.GameConstants;
 import ru.nsk.lizard.game.db.entities.Creature;
 import ru.nsk.lizard.game.db.entities.Gamemap;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Created by dkim on 12.05.2015.
  */

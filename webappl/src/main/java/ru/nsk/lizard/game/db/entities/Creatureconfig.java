@@ -66,7 +66,7 @@ public class Creatureconfig {
     }
 
     @ManyToOne
-    @JoinColumn(name = "creature", referencedColumnName = "creatureId")
+    @JoinColumn(name = "creatureId", referencedColumnName = "creatureId")
     public Creature getCreature() {
         return creature;
     }
@@ -76,7 +76,7 @@ public class Creatureconfig {
     }
 
     @OneToOne
-    @JoinColumn(name = "skill", referencedColumnName = "skillId")
+    @JoinColumn(name = "skillId", referencedColumnName = "skillId")
     public Skill getSkill() {
         return skill;
     }

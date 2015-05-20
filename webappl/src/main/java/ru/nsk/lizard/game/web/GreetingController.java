@@ -41,16 +41,5 @@ public class GreetingController {
         return name;
     }
 
-    public String settleCreature(@RequestParam(value="x") int x,
-                                 @RequestParam(value="y") int y,
-                                 @RequestParam(value="creatureId") long creatureId){
-        if (x<0 || y<0 || creatureId<=0){
-            return "failed to settle creature";
-        }
 
-
-
-
-        return "creature with id="+creatureId+" settled in x="+x+", y="+y;
-    }
 }

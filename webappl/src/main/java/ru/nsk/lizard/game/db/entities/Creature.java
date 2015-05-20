@@ -77,7 +77,7 @@ public class Creature {
         this.user = user;
     }
 
-    @OneToMany(mappedBy = "creature")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "creature", cascade = CascadeType.ALL)
     @OrderBy("stepNumber")
     public List<Creatureconfig> getCreatureConfigs() {
         return creatureConfigs;

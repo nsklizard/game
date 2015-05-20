@@ -2,11 +2,13 @@ package ru.nsk.lizard.game.logic;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import ru.nsk.lizard.game.common.GameConstants;
 import ru.nsk.lizard.game.db.dao.GameMapDAO;
 import ru.nsk.lizard.game.db.entities.Creature;
 import ru.nsk.lizard.game.db.entities.Creatureconfig;
-import ru.nsk.lizard.game.db.entities.Skill;
 import ru.nsk.lizard.game.logic.exceptions.CorruptedCreatureException;
 
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.List;
 /**
  * Created by dkim on 12.05.2015.
  */
+@Component
+@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 public class FightJob {
     private static Logger log = Logger.getLogger(FightJob.class);
 
@@ -22,44 +26,49 @@ public class FightJob {
 
     private int x;
     private int y;
-    private Creature attacker;
+    private Creature attackerCreature;
     private ActionProcessor actionProcessor; //нужен для добавления новых задач по итогам выполнения предыдущих
 
-    public FightJob(int x, int y, Creature attacker, ActionProcessor actionProcessor) {
+    public FightJob(int x, int y, Creature attacker, ActionProcessor actionProcessor, GameMapDAO gameMapDAO) {
         this.x = x;
         this.y = y;
-        this.attacker = attacker;
+        this.attackerCreature = attacker;
         this.actionProcessor = actionProcessor;
+//        this.gameMapDAO = gameMapDAO;
     }
+
+
 
     public void execute() {
         if (x<0 || x>= GameConstants.WORLD_SIZE || y<0 || y>=GameConstants.WORLD_SIZE){
             log.error("Invalid coords. x="+x+", y="+y);
             return;
         }
+        log.info("fight at x="+x+", y="+y);
         Creature defender = gameMapDAO.getCreatureAt(x,y);
+
         if (defender==null){
-            gameMapDAO.setCreatureAt(x,y,attacker);
-        }else if (defender.equals(attacker)){
+            gameMapDAO.setCreatureAt(x,y,attackerCreature);
+        }else if (defender.getCreatureId() == attackerCreature.getCreatureId()){
             log.info("Attacker already has this cell");
             return;
         }
 
         try {
-            if (isAttackerWins(attacker, defender)){
+            if (isAttackerWins(attackerCreature, defender)){
                 log.debug("attacker won");
-                gameMapDAO.setCreatureAt(x,y,attacker);
-                actionProcessor.queue.add(new FightJob(x,y-1,attacker, actionProcessor));
-                actionProcessor.queue.add(new FightJob(x,y+1,attacker, actionProcessor));
-                actionProcessor.queue.add(new FightJob(x-1,y,attacker, actionProcessor));
-                actionProcessor.queue.add(new FightJob(x+1,y,attacker, actionProcessor));
+                gameMapDAO.setCreatureAt(x,y,attackerCreature);
+//                actionProcessor.queue.add(new FightJob(x,y-1,attacker, actionProcessor, gameMapDAO));
+//                actionProcessor.queue.add(new FightJob(x,y+1,attacker, actionProcessor, gameMapDAO));
+//                actionProcessor.queue.add(new FightJob(x-1,y,attacker, actionProcessor, gameMapDAO));
+//                actionProcessor.queue.add(new FightJob(x+1,y,attacker, actionProcessor, gameMapDAO));
             }
             else{
                 gameMapDAO.setCreatureAt(x,y,defender);
-                actionProcessor.queue.add(new FightJob(x,y-1,defender, actionProcessor));
-                actionProcessor.queue.add(new FightJob(x,y+1,defender, actionProcessor));
-                actionProcessor.queue.add(new FightJob(x-1,y,defender, actionProcessor));
-                actionProcessor.queue.add(new FightJob(x+1,y,defender, actionProcessor));
+//                actionProcessor.queue.add(new FightJob(x,y-1,defender, actionProcessor, gameMapDAO));
+//                actionProcessor.queue.add(new FightJob(x,y+1,defender, actionProcessor, gameMapDAO));
+//                actionProcessor.queue.add(new FightJob(x-1,y,defender, actionProcessor, gameMapDAO));
+//                actionProcessor.queue.add(new FightJob(x+1,y,defender, actionProcessor, gameMapDAO));
             }
         } catch (CorruptedCreatureException e) {
             log.error(e);
@@ -107,6 +116,7 @@ public class FightJob {
             }
         }
 
+        log.debug("Who win: "+ attackerWins + " vs. "+defenderWins);
 
         return attackerWins>defenderWins;
     }
