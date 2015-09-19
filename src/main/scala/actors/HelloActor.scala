@@ -16,6 +16,7 @@ object HelloActor extends App{
 //  val c: CCCounter = new CCCounter
 ////  val r:Result = c!SumDigits(1, 2)
 //  println(r)
+  //test
 }
 
 case class SumDigits(a:Int, b:Int)
