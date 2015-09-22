@@ -1,17 +1,14 @@
 package helloworld
 
-import scala.concurrent.{Future, Await}
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.Duration
-import slick.backend.DatabasePublisher
 import akka.actor.{ActorSystem, Props}
 import akka.io.IO
-import spray.can.Http
 import akka.pattern.ask
 import akka.util.Timeout
-import scala.concurrent.duration._
 import slick.driver.PostgresDriver.api._
+import spray.can.Http
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
 import scala.util.{Failure, Success}
 
 /**
@@ -37,6 +34,8 @@ object Hello extends App {
 
   try {
     val users: TableQuery[Users] = TableQuery[Users]
+
+    val user:Users = new Users()
 
     println("Users:")
     db.run (users.result) onComplete {

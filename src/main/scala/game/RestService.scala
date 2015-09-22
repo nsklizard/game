@@ -1,14 +1,11 @@
-package helloworld
+package game
 
 import akka.actor.Actor
-import spray.httpx.SprayJsonSupport
-import spray.json._
 import spray.routing._
-//import TestRequestJSON._
 
 // we don't implement our route structure directly in the service actor because
 // we want to be able to test it independently, without having to spin up an actor
-class MyServiceActor extends Actor with MyService {
+class RestServiceActor extends Actor with RestService {
 
   // the HttpService trait defines only one abstract member, which
   // connects the services environment to the enclosing actor or test
@@ -21,27 +18,27 @@ class MyServiceActor extends Actor with MyService {
 }
 
 
-case class TestRequest(id: Int)
-
-object TestRequestJSON extends DefaultJsonProtocol with SprayJsonSupport {
-  implicit val barFormat = jsonFormat1(TestRequest)
-}
-
 // this trait defines our service behavior independently from the service actor
-trait MyService extends HttpService {
+trait RestService extends HttpService{
+  val myRoute={
+    import game.RestAPI._
+    import game.Skills
 
-
-  val myRoute ={
-    import TestRequestJSON._
-
-      path("add") {
-        post {
-          entity(as[TestRequest]) { tr =>
-            complete {
-              "Order received" + tr.id;
-            }
+    path("add"){
+      post{
+        entity(as[Login]){tr=>
+          complete{
+            "Create creature received "+tr.login
           }
         }
       }
+    }~path("getSkills"){
+      get{
+        entity(as[GetSkills]){ s =>
+          complete{
+          }
+        }
+      }
+    }
   }
 }
