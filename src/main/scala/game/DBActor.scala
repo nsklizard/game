@@ -4,9 +4,9 @@ package game
  * Created by lizard on 23.09.2015.
  */
 class DBActor {
-  //когда-нибудь эта штука будет лазить в БД за данными
+  //РєРѕРіРґР°-РЅРёР±СѓРґСЊ СЌС‚Р° С€С‚СѓРєР° Р±СѓРґРµС‚ Р»Р°Р·РёС‚СЊ РІ Р‘Р” Р·Р° РґР°РЅРЅС‹РјРё
 
-  def getSkills():Array[Skills]={
-    Array(new Skills(1L,"Attack",0))
-  }
+//  def getSkills():Array[Skills]={
+//    Array(new Skills(1L,"Attack",0))
+//  }
 }

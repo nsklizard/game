@@ -35,7 +35,7 @@ object Hello extends App {
   try {
     val users: TableQuery[Users] = TableQuery[Users]
 
-    val user:Users = new Users()
+//    val user:Users = new Users()
 
     println("Users:")
     db.run (users.result) onComplete {
