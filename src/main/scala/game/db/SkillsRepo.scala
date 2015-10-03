@@ -53,8 +53,3 @@ object SkillsRepo extends EntityActions(PostgresDriver) {
   }
 
 }
-
-
-
-
-
