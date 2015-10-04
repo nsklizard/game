@@ -1,9 +1,12 @@
 package game
 
 import akka.actor.Actor
+import game.db.SkillsRepo
 import spray.routing._
 
-import scala.util.Success
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
+import scala.util.{Failure, Success}
 
 // we don't implement our route structure directly in the service actor because
 // we want to be able to test it independently, without having to spin up an actor
@@ -28,14 +31,14 @@ trait RestService extends HttpService{
     import scala.concurrent.ExecutionContext.Implicits.global
 
 
-    val connectionUrl = "jdbc:postgresql://localhost/scala?user=postgres&password=root"
-    val db = Database.forURL(connectionUrl, driver = "org.postgresql.Driver")
+
 
 
 
     path("addSkill"){
       post{
-
+        val connectionUrl = "jdbc:postgresql://localhost/scala?user=postgres&password=root"
+        val db = Database.forURL(connectionUrl, driver = "org.postgresql.Driver")
         entity(as[Types.Skill]){s=>
           complete{
             val skills: TableQuery[Tables.Skills] = TableQuery[Tables.Skills]
@@ -50,11 +53,14 @@ trait RestService extends HttpService{
       }
     }~path("getSkills"){
       get{
-        entity(as[GetSkills]){ s =>
-          complete{
-            "asd"
-          }
+        val connectionUrl = "jdbc:postgresql://localhost/scala?user=postgres&password=root"
+        val db = Database.forURL(connectionUrl, driver = "org.postgresql.Driver")
+
+        val r = Await.result(db.run(SkillsRepo.fetchAll()),Duration.Inf)
+        complete{
+          r.toString
         }
+
       }
     }
   }
