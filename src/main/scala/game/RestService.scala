@@ -56,6 +56,9 @@ trait RestService extends HttpService{
         val connectionUrl = "jdbc:postgresql://localhost/scala?user=postgres&password=root"
         val db = Database.forURL(connectionUrl, driver = "org.postgresql.Driver")
 
+        /*complete{
+          db.run(SkillsRepo.fetchAll())
+        }*/
         val r = Await.result(db.run(SkillsRepo.fetchAll()),Duration.Inf)
         complete{
           r.toString
