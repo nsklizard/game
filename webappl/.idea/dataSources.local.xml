@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="MySQL - game@localhost" uuid="e911abdf-4813-4de1-9b67-745f723b7817">
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <schema-pattern>game.*</schema-pattern>
+      <default-schemas>game.*</default-schemas>
+    </data-source>
+  </component>
+</project>

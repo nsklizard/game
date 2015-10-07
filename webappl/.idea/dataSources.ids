@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - game@localhost" uuid="e911abdf-4813-4de1-9b67-745f723b7817">
+    <database-info product="MySQL" version="5.5.43" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <schema name="" catalog="game"/>
+    <table name="creature" schema="" catalog="game" type="TABLE">
+      <column name="creatureId" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="userId" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="isSys" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4" def="MA=="/>
+      <primary-key name="PRIMARY" columns="creatureId"/>
+      <foreign-key name="creature_userId_fk" columns="userId" ref-table="user" ref-schema="" ref-catalog="game" ref-columns="userId" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="creatureConfig_creatureId_fk" table="creatureconfig" schema="" catalog="game" columns="creatureId"/>
+      <exported-key name="gameMap_creatureId_fk" table="gamemap" schema="" catalog="game" columns="creatureId"/>
+      <index name="creature_userId_fk_idx" unique="false" columns="userId"/>
+    </table>
+    <table name="creatureconfig" schema="" catalog="game" type="TABLE">
+      <column name="creatureConfigId" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="creatureId" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="skillId" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="power" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="stepNumber" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="creatureConfigId"/>
+      <foreign-key name="creatureConfig_creatureId_fk" columns="creatureId" ref-table="creature" ref-schema="" ref-catalog="game" ref-columns="creatureId" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="creatureConfig_skillId_fk" columns="skillId" ref-table="skill" ref-schema="" ref-catalog="game" ref-columns="skillId" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="creatureConfig_creatureId_fk_idx" unique="false" columns="creatureId"/>
+      <index name="creatureConfig_skillId_fk_idx" unique="false" columns="skillId"/>
+    </table>
+    <table name="gamemap" schema="" catalog="game" type="TABLE">
+      <column name="gameMapId" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="x" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="y" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="creatureId" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="gameMapId"/>
+      <foreign-key name="gameMap_creatureId_fk" columns="creatureId" ref-table="creature" ref-schema="" ref-catalog="game" ref-columns="creatureId" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="gameMap_creatureId_fk_idx" unique="false" columns="creatureId"/>
+    </table>
+    <table name="skill" schema="" catalog="game" type="TABLE">
+      <column name="skillId" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="skillId"/>
+      <exported-key name="creatureConfig_skillId_fk" table="creatureconfig" schema="" catalog="game" columns="skillId"/>
+    </table>
+    <table name="test" schema="" catalog="game" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="value" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="user" schema="" catalog="game" type="TABLE">
+      <column name="userId" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="login" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="userId"/>
+      <exported-key name="creature_userId_fk" table="creature" schema="" catalog="game" columns="userId"/>
+    </table>
+  </data-source>
+</component>
